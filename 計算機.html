@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>簡易計算機</title>
+    <style>
+      #container {
+        width: 420px;
+        height: 600px;
+        border: 1px #fff solid;
+        background: #000;
+        border-radius: 10px;
+        margin: auto;
+      }
+      #result {
+        width: 100%;
+        height: 100px;
+        font-size: 6rem;
+        color: #fff;
+        text-align: right;
+      }
+      button {
+        font-size: 2rem;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-left: 1.5px;
+        border: none;
+      }
+      #zero {
+        width: 200px;
+        border-radius: 100px;
+      }
+
+      button:hover {
+        transform: scale(1.05);
+      }
+      button:active {
+        transform: skew(1deg);
+      }
+
+      .math-symbol,
+      #equal {
+        background: orange;
+        color: #fff;
+      }
+      .num {
+        background: #555;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="result">0</div>
+      <button id="reset">AC</button>
+      <button id="negative">+/-</button>
+      <button id="percent">%</button>
+      <button class="math-symbol">/</button>
+      <br />
+      <button class="num">7</button>
+      <button class="num">8</button>
+      <button class="num">9</button>
+      <button class="math-symbol">X</button>
+      <br />
+      <button class="num">4</button>
+      <button class="num">5</button>
+      <button class="num">6</button>
+      <button class="math-symbol">-</button>
+      <br />
+      <button class="num">1</button>
+      <button class="num">2</button>
+      <button class="num">3</button>
+      <button class="math-symbol">+</button>
+      <br />
+      <button id="zero" class="num">0</button>
+      <button class="num">.</button>
+      <button id="equal">=</button>
+    </div>
+
+    <script>
+      const output = document.getElementById("result");
+      const nums = document.querySelectorAll(".num");
+      const mathSymbols = document.querySelectorAll(".math-symbol");
+      const negative = document.getElementById("negative");
+      const percent = document.getElementById("percent");
+      const equal = document.getElementById("equal");
+      const reset = document.getElementById("reset");
+      let isequal = false; //是否案過等於鍵
+      var lastText = "";
+
+      //   num.addEventListener
+      // 設定數字與小數點的事件監聽，點擊數字鍵將結果呈現output
+      nums.forEach((num) => {
+        num.addEventListener("click", (e) => {
+          if (isequal) {
+            output.innerText = e.target.innerText;
+            isequal = false;
+          } else {
+            if (output.innerText == 0) {
+              output.innerText = e.target.innerText;
+            } else {
+              output.innerText += e.target.innerText;
+            }
+          }
+          lastText = output.innerText[output.innerText.length - 1];
+        });
+      });
+      // 設定數學計算事件監聽
+      mathSymbols.forEach((mathSymbol) => {
+        mathSymbol.addEventListener("click", (e) => {
+          //最後一個字不是運算子，加上去
+          if (!isNaN(lastText)) {
+            output.innerText += e.target.innerText;
+            lastText = output.innerText[output.innerText.length - 1];
+          }
+        });
+      });
+      // 設定歸零鍵- 網頁點擊
+      reset.addEventListener("click", (e) => {
+        output.innerText = 0;
+      });
+      //設定正負號 -  網頁點擊
+      negative.addEventListener("click", (e) => {
+        output.innerText = output.innerText * -1;
+      });
+      //設定百分比 -  網頁點擊
+      percent.addEventListener("click", (e) => {
+        output.innerText = output.innerText * 0.01;
+      });
+
+      //設定計算結果
+      equal.addEventListener("click", (e) => {
+        output.innerText = eval(output.innerText);
+        isequal = true;
+      });
+
+      //設定鍵盤監聽
+      document.addEventListener("keydown", (e) => {
+        console.log(e);
+
+        // 設定數字與小數點的事件監聽，點擊數字鍵將結果呈現output
+        if (!isNaN(e.key)) {
+          if (isequal) {
+            output.innerText = e.key;
+            isequal = false;
+          } else {
+            if (output.innerText == 0) {
+              output.innerText = e.key;
+            } else {
+              output.innerText += e.key;
+            }
+          }
+          lastText = output.innerText[output.innerText.length - 1];
+        }
+        // 設定數學計算事件監聽
+        if (e.key == "+" || e.key == "-" || e.key == "*" || e.key == "/") {
+          if (!isNaN(lastText)) {
+            output.innerText += e.key;
+            lastText = output.innerText[output.innerText.length - 1];
+          }
+        }
+
+        // 設定歸零鍵
+        if (e.key == "c") {
+          output.innerText = 0;
+        }
+        //設定計算結果
+        if (e.key == "Enter") {
+          output.innerText = eval(output.innerText);
+          isequal = true;
+        }
+      });
+    </script>
+  </body>
+</html>
