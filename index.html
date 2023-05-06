@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>簡易計算機</title>
+    <style>
+      body {
+        background: url("./img/iSlide-Digital_Technical_Guides.gif");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      #iphone > img {
+        position: absolute;
+        width: 396px;
+        height: 648px;
+        left: 50%;
+        top: -2.5%;
+        transform: translateX(-50%);
+      }
+      #container {
+        position: absolute;
+        width: 308px;
+        height: 470px;
+        background: #000;
+        border-radius: 10px;
+        left: 50%;
+        top: 12%;
+        transform: translateX(-50%);
+      }
+      #result {
+        width: 100%;
+        height: 100px;
+        font-size: 6rem;
+        color: #fff;
+        text-align: right;
+        margin-bottom: 15px;
+      }
+      button {
+        font-size: 2rem;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        margin-left: 1.5px;
+        border: none;
+      }
+      #zero {
+        width: 140px;
+        border-radius: 140px;
+        margin-left: 4px;
+        margin-right: 4px;
+      }
+      #home {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        top: 87%;
+        left: 47%;
+        background: transparent;
+        border: none;
+      }
+
+      button:hover {
+        transform: scale(1.05);
+      }
+      button:active {
+        transform: skew(1deg);
+      }
+
+      .math-symbol,
+      #equal {
+        background: orange;
+        color: #fff;
+      }
+      .num {
+        background: #555;
+        color: #fff;
+      }
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      .fadeOut {
+        animation: fadeOut 2s linear 0s;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .fadeIn {
+        animation: fadeIn 2s linear 0s;
+      }
+      .none {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="iphone">
+      <img src="./img/Apple_apple_iphone_SE2.png" alt="" />
+      <div id="container">
+        <div id="result">0</div>
+        <button id="reset">AC</button>
+        <button id="negative">+/-</button>
+        <button id="percent">%</button>
+        <button class="math-symbol">/</button>
+        <br />
+        <button class="num">7</button>
+        <button class="num">8</button>
+        <button class="num">9</button>
+        <button class="math-symbol">*</button>
+        <br />
+        <button class="num">4</button>
+        <button class="num">5</button>
+        <button class="num">6</button>
+        <button class="math-symbol">-</button>
+        <br />
+        <button class="num">1</button>
+        <button class="num">2</button>
+        <button class="num">3</button>
+        <button class="math-symbol">+</button>
+        <br />
+        <button id="zero" class="num">0</button>
+        <button class="num">.</button>
+        <button id="equal">=</button>
+      </div>
+      <input type="button" value="" id="home" />
+    </div>
+
+    <script>
+      const output = document.getElementById("result");
+      const nums = document.querySelectorAll(".num");
+      const mathSymbols = document.querySelectorAll(".math-symbol");
+      const negative = document.getElementById("negative");
+      const percent = document.getElementById("percent");
+      const equal = document.getElementById("equal");
+      const reset = document.getElementById("reset");
+      let isequal = false; //是否案過等於鍵
+      var lastText = "";
+
+      //   num.addEventListener
+      // 設定數字與小數點的事件監聽，點擊數字鍵將結果呈現output
+      nums.forEach((num) => {
+        num.addEventListener("click", (e) => {
+          if (isequal) {
+            output.innerText = e.target.innerText;
+            isequal = false;
+          } else {
+            if (output.innerText == 0) {
+              output.innerText = e.target.innerText;
+            } else {
+              output.innerText += e.target.innerText;
+            }
+          }
+          lastText = output.innerText[output.innerText.length - 1];
+        });
+      });
+      // 設定數學計算事件監聽
+      mathSymbols.forEach((mathSymbol) => {
+        mathSymbol.addEventListener("click", (e) => {
+          //最後一個字不是運算子，加上去
+          if (!isNaN(lastText)) {
+            output.innerText += e.target.innerText;
+            lastText = output.innerText[output.innerText.length - 1];
+          }
+        });
+      });
+      // 設定歸零鍵- 網頁點擊
+      reset.addEventListener("click", (e) => {
+        output.innerText = 0;
+      });
+      //設定正負號 -  網頁點擊
+      negative.addEventListener("click", (e) => {
+        output.innerText = output.innerText * -1;
+      });
+      //設定百分比 -  網頁點擊
+      percent.addEventListener("click", (e) => {
+        output.innerText = output.innerText * 0.01;
+      });
+
+      //設定計算結果
+      equal.addEventListener("click", (e) => {
+        output.innerText = eval(output.innerText);
+        isequal = true;
+      });
+
+      //設定鍵盤監聽
+      document.addEventListener("keydown", (e) => {
+        console.log(e);
+
+        // 設定數字與小數點的事件監聽，點擊數字鍵將結果呈現output
+        if (!isNaN(e.key)) {
+          if (isequal) {
+            output.innerText = e.key;
+            isequal = false;
+          } else {
+            if (output.innerText == 0) {
+              output.innerText = e.key;
+            } else {
+              output.innerText += e.key;
+            }
+          }
+          lastText = output.innerText[output.innerText.length - 1];
+        }
+        // 設定數學計算事件監聽
+        if (e.key == "+" || e.key == "-" || e.key == "*" || e.key == "/") {
+          if (!isNaN(lastText)) {
+            output.innerText += e.key;
+            lastText = output.innerText[output.innerText.length - 1];
+          }
+        }
+
+        // 設定歸零鍵
+        if (e.key == "c") {
+          output.innerText = 0;
+        }
+        //設定計算結果
+        if (e.key == "Enter") {
+          output.innerText = eval(output.innerText);
+          isequal = true;
+        }
+      });
+
+      // 設定home鍵
+      let isHome = false;
+      let home = document.getElementById("home");
+      let container = document.getElementById("container");
+      home.addEventListener("click", () => {
+        if (!isHome) {
+          isHome = true;
+          container.classList.remove("fadeIn");
+          container.classList.add("fadeOut");
+          setTimeout(() => {
+            container.classList.add("none");
+          }, 2000);
+        } else {
+          isHome = false;
+          container.classList.remove("fadeOut");
+          container.classList.remove("none");
+          container.classList.add("fadeIn");
+        }
+      });
+    </script>
+  </body>
+</html>
