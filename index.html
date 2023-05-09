@@ -10,23 +10,33 @@
         background: url("./img/iSlide-Digital_Technical_Guides.gif");
         background-repeat: no-repeat;
         background-size: cover;
+        background-size: 100vw 100vh;
       }
-      #iphone > img {
+      #iphone {
+        position: relative;
+        background: url("./img/Apple_apple_iphone_SE2.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 297px;
+        height: 612px;
+        margin: auto;
+      }
+      /* #iphone > img {
         position: absolute;
         width: 396px;
         height: 648px;
         left: 50%;
         top: -2.5%;
         transform: translateX(-50%);
-      }
+      } */
       #container {
         position: absolute;
-        width: 308px;
-        height: 470px;
+        width: 244px;
+        height: 441px;
         background: #000;
         border-radius: 10px;
-        left: 50%;
-        top: 12%;
+        left: 53%;
+        top: 14%;
         transform: translateX(-50%);
       }
       #result {
@@ -39,25 +49,25 @@
       }
       button {
         font-size: 2rem;
-        width: 70px;
-        height: 70px;
+        width: 52.5px;
+        height: 52.5px;
         border-radius: 50%;
-        margin-left: 1.5px;
         border: none;
+        margin-left: 3px;
       }
       #zero {
-        width: 140px;
-        border-radius: 140px;
-        margin-left: 4px;
-        margin-right: 4px;
+        width: 105px;
+        border-radius: 105px;
+        margin-left: 5px;
+        margin-right: 5px;
       }
       #home {
         position: absolute;
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        top: 87%;
-        left: 47%;
+        top: 86%;
+        left: 45%;
         background: transparent;
         border: none;
       }
@@ -107,7 +117,7 @@
   </head>
   <body>
     <div id="iphone">
-      <img src="./img/Apple_apple_iphone_SE2.png" alt="" />
+      <!-- <img src="./img/Apple_apple_iphone_SE2.png" alt="" /> -->
       <div id="container">
         <div id="result">0</div>
         <button id="reset">AC</button>
